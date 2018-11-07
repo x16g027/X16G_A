@@ -16,9 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Moon" />
-        <activity android:name=".Weather" />
-        <activity android:name=".Constellation"></activity>
+        <activity
+            android:name=".Moon"
+            android:label="月相"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".Weather"
+            android:label="天気"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".Constellation"
+            android:label="星座"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>
