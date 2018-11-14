@@ -6,11 +6,52 @@
     android:layout_height="match_parent"
     tools:context=".Moon">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="月相表示画面"
-        android:textSize="36sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/MoonTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            android:gravity="right"
+            android:text="読み込み中"
+            android:textColor="@android:color/background_light"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="172dp"
+            tools:layout_editor_absoluteY="61dp" />
+
+        <ImageView
+            android:id="@+id/Moonimg"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:background="@android:color/black"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="61dp" />
+
+        <TextView
+            android:id="@+id/Mooninfo"
+            android:layout_width="match_parent"
+            android:layout_height="71dp"
+            android:background="@android:color/black"
+            android:gravity="center"
+            android:text="読み込み中"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="455dp" />
+
+        <SeekBar
+            android:id="@+id/DayChange"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@android:color/black"
+            android:max="12"
+            android:progress="6"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="510dp" />
+
+    </LinearLayout>
 </LinearLayout>
