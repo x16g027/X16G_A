@@ -7,14 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -27,13 +19,12 @@ import java.util.Map;
 public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener{
 
     Calendar calendar; //年月日取得用のカレンダー
-    ArrayList<Integer> moonAPI;
-    String get;
-    Object set;
-    int mphase;
-    double dphase;
-    TextView textView;
-    TextView moon;
+
+    ArrayList<Integer> moonAPI; //取得した月相をint型で格納
+    String get; //月相変換用
+    Object set; //月相変換用
+    int mphase; //月相変換用
+    double dphase; //月相変換用
 
     int ddata; //カレンダー日
     int mdata; //カレンダー月
@@ -74,7 +65,7 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
     @Override
     protected  void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_moon);
 
         calendar = Calendar.getInstance(); //生成
         calendar.add(Calendar.DAY_OF_MONTH,-6);
@@ -82,37 +73,40 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
         mdata = calendar.get(Calendar.MONTH) +1 ; //月
         ddata = calendar.get(Calendar.DAY_OF_MONTH); //日
         moonAPI = new ArrayList<Integer>();
-        MoonReader.getMoon("http://labs.bitmeister.jp/ohakon/api/?mode=moon_phase&year=" + ydata + "&month=" + mdata + "&day=" + ddata + "&hour=20.00", this);
-        ImageButton Menu = (ImageButton)findViewById(R.id.Menu);
-        //  Menu.setOnClickListener(this);
+        MoonReader.getMoon(this);
 
     }
 
     @Override
     public void onMoon(List<Map> Moons) {
-        if(Moons!=null) {
-            for (Map map : Moons) {
-//				textView.append("******** 2 "+a+"\n");
-                set = map.get("moon_phase");
-                get = set.toString();
-                dphase = Double.parseDouble(get);
-                mphase = (int)dphase;
-                moonAPI.add(mphase);
-//				textView.append(String.format("%s\n%s\n", map.get("moon_phase"),mphase));
-//              textView.append("******** 3 "+a+"\n\n");
-            }
-        }else{
-            minfo.setText("エラー\n");
-        }
-        time = (TextView)findViewById(R.id.MoonTime);//年月日表示
-
-        SeekBar day = (SeekBar)findViewById(R.id.DayChange); //シークバー
 
         mImg = (ImageView)findViewById(R.id.Moonimg); //Moonimg(月相画像)
         minfo = (TextView)findViewById(R.id.Mooninfo);//Mooninfo(月相状態)
+        time = (TextView) findViewById(R.id.MoonTime);//MoonTime(指定時刻)
         imgArray = getResources().obtainTypedArray(R.array.default_moonimg2); //画像アレイリスト準備
         infoArray = getResources().obtainTypedArray(R.array.default_moontext); //状態アレイリスト準備
 
+        calendar = Calendar.getInstance(); //生成
+        ydata = calendar.get(Calendar.YEAR); //年
+        mdata = calendar.get(Calendar.MONTH) +1 ; //月
+        ddata = calendar.get(Calendar.DAY_OF_MONTH); //日
+        time.setText(ydata+"/"+mdata+"/"+ddata); //年月日表示
+
+        if(Moons!=null) {
+            //13日分の月相情報をmoonAPIに
+            for (Map map : Moons) {
+                set = map.get("moon_phase");        //月相取得
+                get = set.toString();               //String型に変換
+                dphase = Double.parseDouble(get);   //Double型に変換
+                mphase = (int)dphase;               //Doubleをint型に
+                moonAPI.add(mphase);                //moonAPIに格納
+            }
+        }else{
+            minfo.setText("エラー\n");
+            return;
+        }
+
+        SeekBar day = (SeekBar)findViewById(R.id.DayChange); //シークバー
 
         calendar = Calendar.getInstance(); //生成
         ydata = calendar.get(Calendar.YEAR); //年
@@ -201,11 +195,13 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
         mImg.setImageDrawable(mcount); //mImgに結果を送る
 
 
+
         day.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mImg = (ImageView)findViewById(R.id.Moonimg); //Moonimg(月相画像)
                 minfo = (TextView)findViewById(R.id.Mooninfo);//Mooninfo(月相状態)
+                time = (TextView) findViewById(R.id.MoonTime);//MoonTime(指定時刻)
                 imgArray = getResources().obtainTypedArray(R.array.default_moonimg2); //画像アレイリスト準備
                 infoArray = getResources().obtainTypedArray(R.array.default_moontext); //状態アレイリスト準備
 

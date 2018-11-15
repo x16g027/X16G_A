@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class Weather extends AppCompatActivity {
 
@@ -12,6 +13,8 @@ public class Weather extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
+        TextView textView = findViewById(R.id.textView3);
+        textView.setText("おてんこ");
     }
 
     // メニューをActivity上に設置する

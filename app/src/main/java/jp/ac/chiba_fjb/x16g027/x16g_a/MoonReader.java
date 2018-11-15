@@ -23,7 +23,7 @@ public class MoonReader {
         void onMoon(List<Map> Moons);
     }
 
-    public static void getMoon(final String url, final OnMoonListener listener){
+    public static void getMoon(final OnMoonListener listener){
         final Handler handler = new Handler();
 
         new Thread(){
