@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -16,7 +18,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener{
+public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener, View.OnClickListener {
 
     Calendar calendar; //年月日取得用のカレンダー
 
@@ -44,6 +46,8 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
     ArrayList<Integer> moonlist; //画像及び状態ID格納用
     ArrayList<Integer> moongetlist; //取得した1週間前後の月相
     int getmoon;
+    Button upday;
+    Button duday;
 
 
     public void Moon(int a, int b){
@@ -74,6 +78,7 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
         ddata = calendar.get(Calendar.DAY_OF_MONTH); //日
         moonAPI = new ArrayList<Integer>();
         MoonReader.getMoon(this);
+        upday.setOnClickListener(this);
 
     }
 
@@ -279,6 +284,19 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
 
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.textView:
+
+                break;
+
+            case R.id .Moonimg:
+
+                break;
         }
     }
 }
