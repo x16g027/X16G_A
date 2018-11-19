@@ -46,8 +46,26 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
     ArrayList<Integer> moonlist; //画像及び状態ID格納用
     ArrayList<Integer> moongetlist; //取得した1週間前後の月相
     int getmoon;
+
+
     Button upday;
-    Button duday;
+    Button downday;
+    int day ;
+    int Moon ;
+
+    public void DayCalendar(int day){
+        calendar=Calendar.getInstance(); //内容リセット
+        calendar.add(Calendar.DAY_OF_MONTH,day+1); //年月日加算
+        mdata=calendar.get(Calendar.MONTH)+1; //月
+        ddata=calendar.get(Calendar.DAY_OF_MONTH); //日
+        upday.setText(mdata+"/"+ddata); //年月日表示]
+        calendar=Calendar.getInstance(); //内容リセット
+        calendar.add(Calendar.DAY_OF_MONTH,day-1); //年月日加算
+        mdata=calendar.get(Calendar.MONTH)+1; //月
+        ddata=calendar.get(Calendar.DAY_OF_MONTH); //日
+        downday.setText(mdata+"/"+ddata); //年月日表示
+        calendar=Calendar.getInstance(); //内容リセット
+    }
 
 
     public void Moon(int a, int b){
@@ -78,7 +96,16 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
         ddata = calendar.get(Calendar.DAY_OF_MONTH); //日
         moonAPI = new ArrayList<Integer>();
         MoonReader.getMoon(this);
+
+        day = 6;
+        Moon = 0;
+
+        upday = findViewById(R.id.Plus);
         upday.setOnClickListener(this);
+        downday = findViewById(R.id.Minus);
+        downday.setOnClickListener(this);
+        upday.setEnabled(false);
+        downday.setEnabled(false);
 
     }
 
@@ -111,7 +138,7 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
             return;
         }
 
-        SeekBar day = (SeekBar)findViewById(R.id.DayChange); //シークバー
+//        SeekBar day = (SeekBar)findViewById(R.id.DayChange); //シークバー
 
         calendar = Calendar.getInstance(); //生成
         ydata = calendar.get(Calendar.YEAR); //年
@@ -132,13 +159,13 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
         //月相判定
         for(int i=0; i<13; i++) {
             getmoon = moongetlist.get(i);
-            if (((getmoon >= 0)&&(getmoon <= 5)) || ((getmoon >= 355))) {
+            if (((getmoon >= 0)&&(getmoon <= 4)) || ((getmoon >= 356))) {
                 moonlist.add(0);//新月
-            } else if ((getmoon >= 85)&&(getmoon <= 95)) {
+            } else if ((getmoon >= 84)&&(getmoon <= 96)) {
                 moonlist.add(7);//上弦
-            } else if ((getmoon >= 175)&&(getmoon <= 185)) {
+            } else if ((getmoon >= 174)&&(getmoon <= 186)) {
                 moonlist.add(14);//満月
-            } else if ((getmoon >= 205)&&(getmoon <= 215)) {
+            } else if ((getmoon >= 204)&&(getmoon <= 216)) {
                 moonlist.add(21);//下弦
             } else if ((getmoon >= 0) && (getmoon <= 15)) {
                 moonlist.add(1);
@@ -198,9 +225,11 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
 
         mcount = imgArray.getDrawable(mselect);//IDから対応したimgを取り出す
         mImg.setImageDrawable(mcount); //mImgに結果を送る
+        DayCalendar(0);
+        upday.setEnabled(true);
+        downday.setEnabled(true);
 
-
-
+/*
         day.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -252,7 +281,7 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
             }
 
         });
-
+*/
     }
 
     // メニューをActivity上に設置する
@@ -290,12 +319,36 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.textView:
-
+            case R.id.Plus:
+                upday.setEnabled(true);
+                downday.setEnabled(true);
+                day++;
+                Moon++;
+                if (day==12){
+                    Moon(Moon,day);
+                    DayCalendar(Moon);
+                    upday.setEnabled(false);
+                    upday.setText("");
+                    return;
+                }
+                DayCalendar(Moon);
+                Moon(Moon,day);
                 break;
 
-            case R.id .Moonimg:
-
+            case R.id .Minus:
+                upday.setEnabled(true);
+                downday.setEnabled(true);
+                day--;
+                Moon--;
+               if (day==0){
+                    Moon(Moon,day);
+                    DayCalendar(Moon);
+                    downday.setEnabled(false);
+                    downday.setText("");
+                    return;
+                }
+                DayCalendar(Moon);
+                Moon(Moon,day);
                 break;
         }
     }

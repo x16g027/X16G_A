@@ -34,7 +34,7 @@
         <TextView
             android:id="@+id/Mooninfo"
             android:layout_width="match_parent"
-            android:layout_height="71dp"
+            android:layout_height="58dp"
             android:background="@android:color/black"
             android:gravity="center"
             android:text="読み込み中"
@@ -43,15 +43,28 @@
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="455dp" />
 
-        <SeekBar
-            android:id="@+id/DayChange"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:background="@android:color/black"
-            android:max="12"
-            android:progress="6"
-            tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="510dp" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/Minus"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="読み込み中"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/Plus"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="読み込み中"
+                android:textSize="24sp" />
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>
