@@ -161,11 +161,11 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
             getmoon = moongetlist.get(i);
             if (((getmoon >= 0)&&(getmoon <= 4)) || ((getmoon >= 356))) {
                 moonlist.add(0);//新月
-            } else if ((getmoon >= 84)&&(getmoon <= 96)) {
+            } else if ((getmoon >= 86)&&(getmoon <= 94)) {
                 moonlist.add(7);//上弦
-            } else if ((getmoon >= 174)&&(getmoon <= 186)) {
+            } else if ((getmoon >= 176)&&(getmoon <= 184)) {
                 moonlist.add(14);//満月
-            } else if ((getmoon >= 204)&&(getmoon <= 216)) {
+            } else if ((getmoon >= 266)&&(getmoon <= 274)) {
                 moonlist.add(21);//下弦
             } else if ((getmoon >= 0) && (getmoon <= 15)) {
                 moonlist.add(1);
@@ -328,7 +328,7 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
                     Moon(Moon,day);
                     DayCalendar(Moon);
                     upday.setEnabled(false);
-                    upday.setText("　　　   　 　 ");
+                    upday.setText("");
                     return;
                 }
                 DayCalendar(Moon);
@@ -344,7 +344,7 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
                     Moon(Moon,day);
                     DayCalendar(Moon);
                     downday.setEnabled(false);
-                    downday.setText("　　　    　　 ");
+                    downday.setText("");
                     return;
                 }
                 DayCalendar(Moon);
