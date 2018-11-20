@@ -58,12 +58,12 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
         calendar.add(Calendar.DAY_OF_MONTH,day+1); //年月日加算
         mdata=calendar.get(Calendar.MONTH)+1; //月
         ddata=calendar.get(Calendar.DAY_OF_MONTH); //日
-        upday.setText(mdata+"/"+ddata); //年月日表示]
+        upday.setText(mdata+"月"+ddata+"日"+"：→"); //年月日表示]
         calendar=Calendar.getInstance(); //内容リセット
         calendar.add(Calendar.DAY_OF_MONTH,day-1); //年月日加算
         mdata=calendar.get(Calendar.MONTH)+1; //月
         ddata=calendar.get(Calendar.DAY_OF_MONTH); //日
-        downday.setText(mdata+"/"+ddata); //年月日表示
+        downday.setText("←："+mdata+"月"+ddata+"日"); //年月日表示
         calendar=Calendar.getInstance(); //内容リセット
     }
 
@@ -73,7 +73,7 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
         ydata=calendar.get(Calendar.YEAR); //年
         mdata=calendar.get(Calendar.MONTH)+1; //月
         ddata=calendar.get(Calendar.DAY_OF_MONTH); //日
-        time.setText(ydata+"/"+mdata+"/"+ddata); //年月日表示
+        time.setText(ydata+"年"+mdata+"月"+ddata+"日"); //年月日表示
         calendar=Calendar.getInstance(); //内容リセット
 
         mselect=moonlist.get(b);//月相状態ID
@@ -122,7 +122,7 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
         ydata = calendar.get(Calendar.YEAR); //年
         mdata = calendar.get(Calendar.MONTH) +1 ; //月
         ddata = calendar.get(Calendar.DAY_OF_MONTH); //日
-        time.setText(ydata+"/"+mdata+"/"+ddata); //年月日表示
+        time.setText(ydata+"年"+mdata+"月"+ddata+"日"); //年月日表示
 
         if(Moons!=null) {
             //13日分の月相情報をmoonAPIに
@@ -328,7 +328,7 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
                     Moon(Moon,day);
                     DayCalendar(Moon);
                     upday.setEnabled(false);
-                    upday.setText("");
+                    upday.setText("　　　   　 　 ");
                     return;
                 }
                 DayCalendar(Moon);
@@ -344,7 +344,7 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
                     Moon(Moon,day);
                     DayCalendar(Moon);
                     downday.setEnabled(false);
-                    downday.setText("");
+                    downday.setText("　　　    　　 ");
                     return;
                 }
                 DayCalendar(Moon);
