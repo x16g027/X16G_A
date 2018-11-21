@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,9 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".Constellation"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,19 +25,11 @@
 
         <activity
             android:name=".Moon"
-            android:label="月相"
             android:launchMode="singleTask"/>
         <activity
             android:name=".Weather"
-            android:label="天気"
-            android:launchMode="singleTask"/>
-        <activity
-            android:name=".Constellation"
-            android:label="星座"
             android:launchMode="singleTask"/>
 
     </application>
-
-
-
+    
 </manifest>
