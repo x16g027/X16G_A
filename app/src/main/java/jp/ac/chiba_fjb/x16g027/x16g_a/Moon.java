@@ -44,15 +44,14 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
     String mtext; //String挿入用
 
     ArrayList<Integer> moonlist; //画像及び状態ID格納用
-    ArrayList<Integer> moongetlist; //取得した1週間前後の月相
     int getmoon;
 
+    Button upday;//日付加算ボタン
+    Button downday;//日付減算ボタン
+    int day ; //日付処理用(初期値0)
+    int Moon ;//月相処理用(初期値6)
 
-    Button upday;
-    Button downday;
-    int day ;
-    int Moon ;
-
+    //画面下部ボタン日付表示処理
     public void DayCalendar(int day){
         calendar=Calendar.getInstance(); //内容リセット
         calendar.add(Calendar.DAY_OF_MONTH,day+1); //年月日加算
@@ -68,6 +67,7 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
     }
 
 
+    //月相状態及び画面上部日付表示処理
     public void Moon(int a, int b){
         calendar.add(Calendar.DAY_OF_MONTH,a); //年月日加算
         ydata=calendar.get(Calendar.YEAR); //年
@@ -89,21 +89,19 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moon);
 
-        calendar = Calendar.getInstance(); //生成
-        calendar.add(Calendar.DAY_OF_MONTH,-6);
-        ydata = calendar.get(Calendar.YEAR); //年
-        mdata = calendar.get(Calendar.MONTH) +1 ; //月
-        ddata = calendar.get(Calendar.DAY_OF_MONTH); //日
-        moonAPI = new ArrayList<Integer>();
-        MoonReader.getMoon(this);
+        //初期値入力
+        day = 0;
+        Moon = 6;
 
-        day = 6;
-        Moon = 0;
+        calendar = Calendar.getInstance(); //カレンダー生成
+        MoonReader.getMoon(this); //API処理、MoonReaderへ
 
+        //日にち変更用ボタンの設定
         upday = findViewById(R.id.Plus);
         upday.setOnClickListener(this);
         downday = findViewById(R.id.Minus);
         downday.setOnClickListener(this);
+        //読み込み完了まで無効化
         upday.setEnabled(false);
         downday.setEnabled(false);
 
@@ -115,8 +113,8 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
         mImg = (ImageView)findViewById(R.id.Moonimg); //Moonimg(月相画像)
         minfo = (TextView)findViewById(R.id.Mooninfo);//Mooninfo(月相状態)
         time = (TextView) findViewById(R.id.MoonTime);//MoonTime(指定時刻)
-        imgArray = getResources().obtainTypedArray(R.array.default_moonimg2); //画像アレイリスト準備
-        infoArray = getResources().obtainTypedArray(R.array.default_moontext); //状態アレイリスト準備
+        imgArray = getResources().obtainTypedArray(R.array.default_moonimg2); //moonimg2.xmlから画像アレイリスト準備
+        infoArray = getResources().obtainTypedArray(R.array.default_moontext); //moontext.xnlから状態アレイリスト準備
 
         calendar = Calendar.getInstance(); //生成
         ydata = calendar.get(Calendar.YEAR); //年
@@ -125,40 +123,28 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
         time.setText(ydata+"年"+mdata+"月"+ddata+"日"); //年月日表示
 
         if(Moons!=null) {
+            //moonAPI宣言
+            moonAPI = new ArrayList();
             //13日分の月相情報をmoonAPIに
             for (Map map : Moons) {
-                set = map.get("moon_phase");        //月相取得
+                set = map.get("moon_phase");        //MoonReaderから月相取得
                 get = set.toString();               //String型に変換
                 dphase = Double.parseDouble(get);   //Double型に変換
                 mphase = (int)dphase;               //Doubleをint型に
                 moonAPI.add(mphase);                //moonAPIに格納
             }
         }else{
+            //MoonReaderの中身がNullの時　エラー処理
             minfo.setText("エラー\n");
             return;
         }
 
-//        SeekBar day = (SeekBar)findViewById(R.id.DayChange); //シークバー
-
-        calendar = Calendar.getInstance(); //生成
-        ydata = calendar.get(Calendar.YEAR); //年
-        mdata = calendar.get(Calendar.MONTH) +1 ; //月
-        ddata = calendar.get(Calendar.DAY_OF_MONTH); //日
-        time.setText(ydata+"/"+mdata+"/"+ddata); //年月日表示
-
-
-        moongetlist = new ArrayList(); //月相格納用アレイリスト
-        int b =0;
-        for(int z =0;z<13; z++ ) {
-            b = moonAPI.get(z);
-            moongetlist.add(b);
-        }
-
         //月相判定結果格納アレイリスト
         moonlist = new ArrayList();
-        //月相判定
+        //月相判定(13日分)
         for(int i=0; i<13; i++) {
-            getmoon = moongetlist.get(i);
+            //moonAPIのi番目を判定用に取り出す
+            getmoon = moonAPI.get(i);
             if (((getmoon >= 0)&&(getmoon <= 4)) || ((getmoon >= 356))) {
                 moonlist.add(0);//新月
             } else if ((getmoon >= 86)&&(getmoon <= 94)) {
@@ -167,6 +153,8 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
                 moonlist.add(14);//満月
             } else if ((getmoon >= 266)&&(getmoon <= 274)) {
                 moonlist.add(21);//下弦
+
+                // 以下15度ずつ判定
             } else if ((getmoon >= 0) && (getmoon <= 15)) {
                 moonlist.add(1);
             } else if ((getmoon >= 15) && (getmoon <= 30)) {
@@ -218,71 +206,14 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
             }
 
         }
-        mselect=moonlist.get(6);//月相状態ID
+        //初期画面　日付表示、月相状態表示
+        DayCalendar(day);
+        Moon(day,Moon);
 
-        mtext = infoArray.getString(mselect);//IDから対応したTextを取り出す
-        minfo.setText(mtext); //minfoに結果を送る
-
-        mcount = imgArray.getDrawable(mselect);//IDから対応したimgを取り出す
-        mImg.setImageDrawable(mcount); //mImgに結果を送る
-        DayCalendar(0);
+        //ボタンの有効化
         upday.setEnabled(true);
         downday.setEnabled(true);
-
-/*
-        day.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mImg = (ImageView)findViewById(R.id.Moonimg); //Moonimg(月相画像)
-                minfo = (TextView)findViewById(R.id.Mooninfo);//Mooninfo(月相状態)
-                time = (TextView) findViewById(R.id.MoonTime);//MoonTime(指定時刻)
-                imgArray = getResources().obtainTypedArray(R.array.default_moonimg2); //画像アレイリスト準備
-                infoArray = getResources().obtainTypedArray(R.array.default_moontext); //状態アレイリスト準備
-
-                //シークバー0～12
-                if(progress == 0) {
-                    Moon(-6,0);
-                }else if(progress == 1) {
-                    Moon(-5,1);
-                }else if(progress == 2) {
-                    Moon(-4,2);
-                }else if(progress == 3) {
-                    Moon(-3,3);
-                }else if(progress == 4) {
-                    Moon(-2,4);
-                }else if(progress == 5) {
-                    Moon(-1,5);
-                }else if(progress == 6){
-                    Moon(0,6);
-                }else if(progress == 7){
-                    Moon(1,7);
-                }else if(progress == 8){
-                    Moon(2,8);
-                }else if(progress == 9){
-                    Moon(3,9);
-                }else if(progress == 10){
-                    Moon(4,10);
-                }else if(progress == 11){
-                    Moon(5,11);
-                }else if(progress == 12){
-                    Moon(6,12);
-                }
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-
-        });
-*/
-    }
+        }
 
     // メニューをActivity上に設置する
     @Override
@@ -320,35 +251,49 @@ public class Moon extends AppCompatActivity implements MoonReader.OnMoonListener
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.Plus:
+                //ボタン有効化
                 upday.setEnabled(true);
                 downday.setEnabled(true);
+                //日付と月相状態番号加算
                 day++;
                 Moon++;
-                if (day==12){
-                    Moon(Moon,day);
-                    DayCalendar(Moon);
+                //6日後処理
+                if (Moon==12){
+                    //日付表示、月相状態更新表示
+                    DayCalendar(day);
+                    Moon(day,Moon);
+                    //ボタンの無効化及び非表示
                     upday.setEnabled(false);
                     upday.setText("");
                     return;
                 }
-                DayCalendar(Moon);
-                Moon(Moon,day);
+                //日付表示、月相状態更新表示
+                DayCalendar(day);
+                Moon(day,Moon);
+                //処理終了
                 break;
 
             case R.id .Minus:
+                //ボタン有効化
                 upday.setEnabled(true);
                 downday.setEnabled(true);
+                //日付と月相状態番号減算
                 day--;
                 Moon--;
-               if (day==0){
-                    Moon(Moon,day);
-                    DayCalendar(Moon);
+                //6日前処理
+               if (Moon==0){
+                   //日付表示、月相状態表示
+                   DayCalendar(day);
+                   Moon(day,Moon);
+                    //ボタンの無効化及び非表示
                     downday.setEnabled(false);
                     downday.setText("");
                     return;
                 }
-                DayCalendar(Moon);
-                Moon(Moon,day);
+                //日付表示、月相状態更新表示
+                DayCalendar(day);
+                Moon(day,Moon);
+                //処理終了
                 break;
         }
     }
