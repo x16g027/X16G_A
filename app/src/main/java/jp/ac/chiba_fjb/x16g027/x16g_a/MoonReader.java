@@ -1,5 +1,4 @@
 package jp.ac.chiba_fjb.x16g027.x16g_a;
-
 import android.os.Handler;
 
 import org.w3c.dom.Document;
@@ -15,17 +14,12 @@ import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-
-
 public class MoonReader {
     interface OnMoonListener{
         void onMoon(List<Map> Moons);
     }
-
     public static void getMoon(final OnMoonListener listener){
         final Handler handler = new Handler();
-
         new Thread(){
             @Override
             public void run() {
@@ -34,14 +28,11 @@ public class MoonReader {
                 int ddata; //カレンダー日
                 int mdata; //カレンダー月
                 int ydata; //カレンダー年
-
                 calendar = Calendar.getInstance(); //生成
                 calendar.add(Calendar.DAY_OF_MONTH,-6);
                 ydata = calendar.get(Calendar.YEAR); //年
                 mdata = calendar.get(Calendar.MONTH) +1 ; //月
                 ddata = calendar.get(Calendar.DAY_OF_MONTH); //日
-
-
                 try {
                     //13日分の月相情報取得
                     for (int z = 0; z < 13; z++) {
@@ -49,7 +40,6 @@ public class MoonReader {
                         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                         DocumentBuilder builder = factory.newDocumentBuilder();
                         Document doc = builder.parse("http://labs.bitmeister.jp/ohakon/api/?mode=moon_phase&year=" + ydata + "&month=" + mdata + "&day=" + ddata + "&hour=23.00");
-
                         //最上位エレメントの確認
                         Element element = doc.getDocumentElement();
                         if (!"result".equals(element.getTagName()))
@@ -65,15 +55,12 @@ public class MoonReader {
                                 list.add(map);
                             }
                         }
-
                         //一日更新
                         calendar.add(Calendar.DAY_OF_MONTH,1);
                         ydata = calendar.get(Calendar.YEAR); //年
                         mdata = calendar.get(Calendar.MONTH) +1 ; //月
                         ddata = calendar.get(Calendar.DAY_OF_MONTH); //日
-
                     }
-
                     //結果をメインスレッドのリスナーに通知
                     handler.post(new Runnable() {
                         @Override
@@ -81,7 +68,6 @@ public class MoonReader {
                             listener.onMoon(list);
                         }
                     });
-
                 } catch(Exception e){
                     e.printStackTrace();
                     //結果をメインスレッドのリスナーに通知
@@ -92,13 +78,7 @@ public class MoonReader {
                         }
                     });
                 }
-
-
             }
-
-
         }.start();
-
     }
-
 }
