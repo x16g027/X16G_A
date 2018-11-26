@@ -31,5 +31,5 @@
             android:launchMode="singleTask"/>
 
     </application>
-    
+
 </manifest>
