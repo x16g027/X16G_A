@@ -52,13 +52,13 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
-        weatherImage = findViewById(R.id.WeatherImage);
-        f_layout = findViewById(R.id.freamlayout);
+  //      weatherImage = findViewById(R.id.WeatherImage);
+  //      f_layout = findViewById(R.id.freamlayout);
         weatherlist = new ArrayList<>();
 
         dateText = findViewById(R.id.dateT);
         temp = findViewById(R.id.temperature);
-        max_min = findViewById(R.id.max_min);
+ //       max_min = findViewById(R.id.max_min);
 
         cnt = 0;
 
@@ -94,17 +94,17 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
             map = stars.get(0);
             num = 400;
 
-            if (num >= 800) {
-                weatherImage.setImageResource(R.drawable.sunny);
-                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.sunny_sky));
-            }else if (num >= 600 && num < 800){
-                weatherImage.setImageResource(R.drawable.rainny);
-                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.rainny_sky));
-            }else if (num >= 400 && num < 600){
-                weatherImage.setImageResource(R.drawable.cloudy);
-                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.cloudy_sky));
-            }else{
-            }
+//            if (num >= 800) {
+//                weatherImage.setImageResource(R.drawable.sunny);
+//                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.sunny_sky));
+//            }else if (num >= 600 && num < 800){
+//                weatherImage.setImageResource(R.drawable.rainny);
+//                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.rainny_sky));
+//            }else if (num >= 400 && num < 600){
+//                weatherImage.setImageResource(R.drawable.cloudy);
+//                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.cloudy_sky));
+//            }else{
+//            }
 
             datetext = map.get("time_from").toString();
             year = datetext.substring(0,4);
@@ -137,11 +137,11 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
             cnt = cnt + 8;
         }else{
         }
-        if (cnt >= weatherlist.size()){
+        if (cnt >= weatherlist.size()-1){
             cnt = 38;
             day_after.setEnabled(false);
             hour_after.setEnabled(false);
-        }else if(cnt < 0){
+        }else if(cnt < 1){
             day_before.setEnabled(false);
             hour_before.setEnabled(false);
             cnt=0;
