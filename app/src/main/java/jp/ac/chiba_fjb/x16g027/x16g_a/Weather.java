@@ -38,7 +38,7 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
 
     TextView dateText;
     TextView temp;
-    TextView max_min;
+    TextView temp2;
 
     Button day_before;
     Button hour_before;
@@ -52,13 +52,13 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
-        weatherImage = findViewById(R.id.WeatherImage);
-        f_layout = findViewById(R.id.freamlayout);
+        weatherImage = findViewById(R.id.weatherImage);
+        f_layout = findViewById(R.id.framelayout);
         weatherlist = new ArrayList<>();
 
         dateText = findViewById(R.id.dateT);
         temp = findViewById(R.id.temperature);
-        max_min = findViewById(R.id.max_min);
+        temp2 = findViewById(R.id.temperature2);
 
         cnt = 0;
 
@@ -83,26 +83,26 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
 
 
     @Override
-    public void onStar(List<Map> stars) {
+    public void onStar(List<Map> weather) {
         //イベントの設定
 
-        if(stars!=null) {
-            for (int z = 0; z < stars.size() ; z++){
-                map = stars.get(z);
+        if(weather!=null) {
+            for (int z = 0; z < weather.size() ; z++){
+                map = weather.get(z);
                 weatherlist.add(map);
             }
-            map = stars.get(0);
+            map = weather.get(0);
             num = 400;
 
             if (num >= 800) {
                 weatherImage.setImageResource(R.drawable.sunny);
-                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.sunny_sky));
+//                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.sunny_sky));
             }else if (num >= 600 && num < 800){
                 weatherImage.setImageResource(R.drawable.rainny);
-                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.rainny_sky));
+//                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.rainny_sky));
             }else if (num >= 400 && num < 600){
                 weatherImage.setImageResource(R.drawable.cloudy);
-                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.cloudy_sky));
+//                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.cloudy_sky));
             }else{
             }
 
@@ -114,7 +114,7 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
             hour_int = Integer.parseInt(hour);
             dateText.setText(year + "年" + month + "月" + day + "日 " + hour_int + "時");
 
-            temperature = Double.parseDouble(map.get("temperature_value").toString());
+            temperature = (Double.parseDouble(map.get("temperature_value").toString())) - KELVIN;
             temp.setText(String.valueOf(temperature));
 
         }
