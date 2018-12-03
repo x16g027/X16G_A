@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,18 +28,23 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
     String  month;
     String  day;
     String  hour;
+
+    int     month_int;
+    int     day_int;
     int     hour_int;
 
     Double  temperature;
     Double  h_temperature;
     Double  l_temperature;
 
+    Double  w_speed;
+
     ImageView weatherImage;
     FrameLayout f_layout;
 
     TextView dateText;
     TextView temp;
-    TextView temp2;
+    TextView windSpeed;
 
     Button day_before;
     Button hour_before;
@@ -58,7 +64,7 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
 
         dateText = findViewById(R.id.dateT);
         temp = findViewById(R.id.temperature);
-        temp2 = findViewById(R.id.temperature2);
+        windSpeed = findViewById(R.id.windspeed);
 
         cnt = 0;
 
@@ -77,10 +83,7 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
 
         day_before.setEnabled(false);
         hour_before.setEnabled(false);
-
-
     }
-
 
     @Override
     public void onStar(List<Map> weather) {
@@ -106,17 +109,34 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
             }else{
             }
 
-            datetext = map.get("time_from").toString();
-            year = datetext.substring(0,4);
-            month = datetext.substring(5,7);
-            day = datetext.substring(8,10);
-            hour = datetext.substring(11,13);
+            //日にちの処理
+            datetext = map.get("time_from").toString(); //日にち情報を取得
+
+            //datetextに格納されている年・月・日・時間をそれぞれ切り取って格納
+            year = datetext.substring(0,4);     //年
+            month = datetext.substring(5,7);    //月
+            day = datetext.substring(8,10);     //日
+            hour = datetext.substring(11,13);   //時間
+
+            //月・日・時間のデータをint型へ変換
+            month_int = Integer.parseInt(month);
+            day_int = Integer.parseInt(day);
             hour_int = Integer.parseInt(hour);
-            dateText.setText(year + "年" + month + "月" + day + "日 " + hour_int + "時");
 
+            //各データを再結合して表示
+            dateText.setText(year + "年 " + month_int + "月 " + day_int + "日 " + hour_int + "時");
+
+            //気温の処理
             temperature = (Double.parseDouble(map.get("temperature_value").toString())) - KELVIN;
-            temp.setText(String.valueOf(temperature));
 
+            BigDecimal bd = new BigDecimal(temperature);
+            BigDecimal temp_bd = bd.setScale(0, BigDecimal.ROUND_HALF_UP);
+
+            temp.setText("気温" + String.valueOf(temp_bd) + "℃");
+
+            //風速の処理
+            w_speed = Double.parseDouble(map.get("windSpeed_mps").toString());
+            windSpeed.setText("風速" + String.valueOf(w_speed) + "m/h");
         }
     }
 
@@ -146,17 +166,35 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
             hour_before.setEnabled(false);
             cnt=0;
         }
-        map = weatherlist.get(cnt);
-        datetext = map.get("time_from").toString();
-        year = datetext.substring(0,4);
-        month = datetext.substring(5,7);
-        day = datetext.substring(8,10);
-        hour = datetext.substring(11,13);
-        hour_int = Integer.parseInt(hour);
-        dateText.setText(year + "年" + month + "月" + day + "日 " + hour_int + "時");
 
-        temperature = Double.parseDouble(map.get("temperature_value").toString());
-        temp.setText(String.valueOf(temperature));
+        //日にちの処理
+        datetext = map.get("time_from").toString(); //日にち情報を取得
+
+        //datetextに格納されている年・月・日・時間をそれぞれ切り取って格納
+        year = datetext.substring(0,4);     //年
+        month = datetext.substring(5,7);    //月
+        day = datetext.substring(8,10);     //日
+        hour = datetext.substring(11,13);   //時間
+
+        //月・日・時間のデータをint型へ変換
+        month_int = Integer.parseInt(month);
+        day_int = Integer.parseInt(day);
+        hour_int = Integer.parseInt(hour);
+
+        //各データを再結合して表示
+        dateText.setText(year + "年 " + month_int + "月 " + day_int + "日 " + hour_int + "時");
+
+        //気温の処理
+        temperature = (Double.parseDouble(map.get("temperature_value").toString())) - KELVIN;
+
+        BigDecimal bd = new BigDecimal(temperature);
+        BigDecimal temp_bd = bd.setScale(0, BigDecimal.ROUND_HALF_UP);
+
+        temp.setText("気温" + String.valueOf(temp_bd) + "℃");
+
+        //風速の処理
+        w_speed = Double.parseDouble(map.get("windSpeed_mps").toString());
+        windSpeed.setText("風速" + String.valueOf(w_speed) + "m/h");
     }
 
     // メニューをActivity上に設置する

@@ -38,7 +38,7 @@
             android:textSize="70px" />
 
         <TextView
-            android:id="@+id/temperature2"
+            android:id="@+id/windspeed"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:gravity="center"
