@@ -5,16 +5,158 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-public class Weather extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+public class Weather  extends AppCompatActivity implements WeatherReader.OnStarListener, View.OnClickListener {
+
+    final Double KELVIN = 273.15;
+
+    int     num;
+    int     cnt;
+
+    String  datetext;
+    String  year;
+    String  month;
+    String  day;
+    String  hour;
+    int     hour_int;
+
+    Double  temperature;
+    Double  h_temperature;
+    Double  l_temperature;
+
+    ImageView weatherImage;
+    FrameLayout f_layout;
+
+    TextView dateText;
+    TextView temp;
+    TextView max_min;
+
+    Button day_before;
+    Button hour_before;
+    Button hour_after;
+    Button day_after;
+    Map map;
+    List<Map> weatherlist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
-        TextView textView = findViewById(R.id.textView3);
-        textView.setText("おてんこ");
+
+        weatherImage = findViewById(R.id.WeatherImage);
+        f_layout = findViewById(R.id.freamlayout);
+        weatherlist = new ArrayList<>();
+
+        dateText = findViewById(R.id.dateT);
+        temp = findViewById(R.id.temperature);
+        max_min = findViewById(R.id.max_min);
+
+        cnt = 0;
+
+        //URLをもとに天気情報を取得
+        WeatherReader.getWeather("http://api.openweathermap.org/data/2.5/forecast?id=1850147&APPID=d21a1076e3577e18ffe577b79bef2496&mode=xml",this);
+
+        day_before = (Button)findViewById(R.id.before_day);
+        hour_before = (Button)findViewById(R.id.before_hour);
+        hour_after = (Button)findViewById(R.id.after_hour);
+        day_after = (Button)findViewById(R.id.after_day);
+
+        day_before.setOnClickListener(this);
+        hour_before.setOnClickListener(this);
+        hour_after.setOnClickListener(this);
+        day_after.setOnClickListener(this);
+
+        day_before.setEnabled(false);
+        hour_before.setEnabled(false);
+
+
+    }
+
+
+    @Override
+    public void onStar(List<Map> stars) {
+        //イベントの設定
+
+        if(stars!=null) {
+            for (int z = 0; z < stars.size() ; z++){
+                map = stars.get(z);
+                weatherlist.add(map);
+            }
+            map = stars.get(0);
+            num = 400;
+
+            if (num >= 800) {
+                weatherImage.setImageResource(R.drawable.sunny);
+                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.sunny_sky));
+            }else if (num >= 600 && num < 800){
+                weatherImage.setImageResource(R.drawable.rainny);
+                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.rainny_sky));
+            }else if (num >= 400 && num < 600){
+                weatherImage.setImageResource(R.drawable.cloudy);
+                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.cloudy_sky));
+            }else{
+            }
+
+            datetext = map.get("time_from").toString();
+            year = datetext.substring(0,4);
+            month = datetext.substring(5,7);
+            day = datetext.substring(8,10);
+            hour = datetext.substring(11,13);
+            hour_int = Integer.parseInt(hour);
+            dateText.setText(year + "年" + month + "月" + day + "日 " + hour_int + "時");
+
+            temperature = Double.parseDouble(map.get("temperature_value").toString());
+            temp.setText(String.valueOf(temperature));
+
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        day_after.setEnabled(true);
+        hour_after.setEnabled(true);
+        day_before.setEnabled(true);
+        hour_before.setEnabled(true);
+
+        if(view.getId() == R.id.before_day){
+            cnt = cnt - 8;
+        }else if(view.getId() == R.id.before_hour){
+            cnt = cnt - 1;
+        }else if(view.getId() == R.id.after_hour){
+            cnt = cnt + 1;
+        }else if(view.getId() == R.id.after_day) {
+            cnt = cnt + 8;
+        }else{
+        }
+        if (cnt >= weatherlist.size()){
+            cnt = 38;
+            day_after.setEnabled(false);
+            hour_after.setEnabled(false);
+        }else if(cnt < 0){
+            day_before.setEnabled(false);
+            hour_before.setEnabled(false);
+            cnt=0;
+        }
+        map = weatherlist.get(cnt);
+        datetext = map.get("time_from").toString();
+        year = datetext.substring(0,4);
+        month = datetext.substring(5,7);
+        day = datetext.substring(8,10);
+        hour = datetext.substring(11,13);
+        hour_int = Integer.parseInt(hour);
+        dateText.setText(year + "年" + month + "月" + day + "日 " + hour_int + "時");
+
+        temperature = Double.parseDouble(map.get("temperature_value").toString());
+        temp.setText(String.valueOf(temperature));
     }
 
     // メニューをActivity上に設置する
