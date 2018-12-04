@@ -94,8 +94,8 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
                 map = weather.get(z);
                 weatherlist.add(map);
             }
-            map = weather.get(0);
-            num = 400;
+            map = weather.get(cnt);
+            num = Integer.parseInt(map.get("symbol_number").toString());
 
             if (num >= 800) {
                 weatherImage.setImageResource(R.drawable.sunny);
@@ -157,14 +157,28 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
             cnt = cnt + 8;
         }else{
         }
-        if (cnt >= weatherlist.size()){
-            cnt = 38;
+        if (cnt > weatherlist.size()){
+            cnt = 39;
             day_after.setEnabled(false);
             hour_after.setEnabled(false);
         }else if(cnt < 0){
             day_before.setEnabled(false);
             hour_before.setEnabled(false);
             cnt=0;
+        }
+        map = weatherlist.get(cnt);
+        num = Integer.parseInt(map.get("symbol_number").toString());
+
+        if (num >= 800) {
+            weatherImage.setImageResource(R.drawable.sunny);
+//                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.sunny_sky));
+        }else if (num >= 600 && num < 800){
+            weatherImage.setImageResource(R.drawable.rainny);
+//                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.rainny_sky));
+        }else if (num >= 400 && num < 600){
+            weatherImage.setImageResource(R.drawable.cloudy);
+//                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.cloudy_sky));
+        }else{
         }
 
         //日にちの処理

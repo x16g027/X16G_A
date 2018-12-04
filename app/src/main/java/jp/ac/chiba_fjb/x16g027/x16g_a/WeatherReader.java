@@ -234,7 +234,7 @@ public class WeatherReader {
 
 
     interface OnStarListener {
-        void onStar(List<Map> stars);
+        void onStar(List<Map> weather);
     }
 
 }
