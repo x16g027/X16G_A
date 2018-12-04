@@ -17,6 +17,7 @@
             android:id="@+id/dateT"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:background="#77ffffff"
             android:gravity="center"
             android:text="読み込み中"
             android:textColor="@android:color/background_dark"
@@ -32,6 +33,7 @@
             android:id="@+id/temperature"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:background="#77ffffff"
             android:gravity="center"
             android:text="読み込み中"
             android:textColor="@android:color/background_dark"
@@ -41,6 +43,7 @@
             android:id="@+id/windspeed"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:background="#77ffffff"
             android:gravity="center"
             android:text="読み込み中"
             android:textColor="@android:color/background_dark"
@@ -78,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="80dp"
                 android:layout_weight="1"
-                android:text="一日後へ" />
+                android:text="１日後へ" />
         </LinearLayout>
     </LinearLayout>
 
