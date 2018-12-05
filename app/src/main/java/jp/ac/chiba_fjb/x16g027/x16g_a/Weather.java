@@ -38,6 +38,7 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
     Double  l_temperature;
 
     Double  w_speed;
+    String  w_speed_rank;
 
     ImageView weatherImage;
     FrameLayout f_layout;
@@ -166,16 +167,29 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
         map = weatherlist.get(cnt);
         num = Integer.parseInt(map.get("symbol_number").toString());
 
-        if (num >= 800) {
-            weatherImage.setImageResource(R.drawable.sunny);
+        if (num >= 200 && num < 300) {
+            weatherImage.setImageResource(R.drawable.sunny2);
 //                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.sunny_sky));
-        }else if (num >= 600 && num < 800){
+        }else if (num >= 300 && num < 400){
             weatherImage.setImageResource(R.drawable.rainny);
 //                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.rainny_sky));
-        }else if (num >= 400 && num < 600){
+        }else if (num >= 400 && num < 500){
             weatherImage.setImageResource(R.drawable.cloudy);
 //                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.cloudy_sky));
-        }else{
+        }else if (num >= 500 && num < 600){
+
+        }else if (num >= 600 && num < 700){
+
+        }else if (num >= 700 && num < 800){
+
+        }else if (num >= 800 && num < 900){
+
+
+
+            if(num == 800){
+                weatherImage.setImageResource(R.drawable.sunny2);
+            }
+
         }
 
         //日にちの処理
@@ -201,13 +215,28 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
         BigDecimal bd = new BigDecimal(temperature);
         BigDecimal temp_bd = bd.setScale(0, BigDecimal.ROUND_HALF_UP);
 
-        temp.setText("気温" + String.valueOf(temp_bd) + "℃");
+        temp.setText("気温　" + String.valueOf(temp_bd) + "℃");
 
         //風速の処理
         w_speed = Double.parseDouble(map.get("windSpeed_mps").toString());
-        windSpeed.setText("風速" + String.valueOf(w_speed) + "m/h");
-    }
 
+        //風のレベル設定
+        if(w_speed >= 0 && w_speed <= 0.4){
+            w_speed_rank = "無風";
+        }else if(w_speed > 0.4 && w_speed <= 10){
+            w_speed_rank = "弱い";
+        }else if(w_speed > 10 && w_speed <= 15){
+            w_speed_rank = "やや強い";
+        }else if(w_speed > 15 && w_speed <= 20){
+            w_speed_rank = "強い";
+        }else if(w_speed > 20 && w_speed <= 25){
+            w_speed_rank = "非常に強い";
+        }else{
+            w_speed_rank = "猛烈に強い";
+        }
+
+        windSpeed.setText("風の強さ　" + String.valueOf(w_speed_rank));
+    }
 }
 
 
