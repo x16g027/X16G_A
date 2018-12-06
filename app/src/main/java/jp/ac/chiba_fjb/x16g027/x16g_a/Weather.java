@@ -1,6 +1,8 @@
 package jp.ac.chiba_fjb.x16g027.x16g_a;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -50,8 +52,17 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
     Button hour_before;
     Button hour_after;
     Button day_after;
-    Map map;
+    Button ctiyChange;
+
+
     List<Map> weatherlist;
+
+    int ctiycnt;
+    int ctiyID;
+    TypedArray ctiyList;
+    TypedArray ctiynameList;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,40 +71,44 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
 
         weatherImage = findViewById(R.id.weatherImage);
         f_layout = findViewById(R.id.framelayout);
-        weatherlist = new ArrayList<>();
 
         dateText = findViewById(R.id.dateT);
         temp = findViewById(R.id.temperature);
         windSpeed = findViewById(R.id.windspeed);
 
-        cnt = 0;
-
-        //URLをもとに天気情報を取得
-        WeatherReader.getWeather("http://api.openweathermap.org/data/2.5/forecast?id=1850147&APPID=d21a1076e3577e18ffe577b79bef2496&mode=xml",this);
-
         day_before = (Button)findViewById(R.id.before_day);
         hour_before = (Button)findViewById(R.id.before_hour);
         hour_after = (Button)findViewById(R.id.after_hour);
         day_after = (Button)findViewById(R.id.after_day);
+        ctiyChange = findViewById(R.id.ctiybutton);
 
         day_before.setOnClickListener(this);
         hour_before.setOnClickListener(this);
         hour_after.setOnClickListener(this);
         day_after.setOnClickListener(this);
+        ctiyChange.setOnClickListener(this);
 
+
+        day_after.setEnabled(true);
+        hour_after.setEnabled(true);
         day_before.setEnabled(false);
         hour_before.setEnabled(false);
+        DialogFragment newFragment = new CtiyFragment();
+        newFragment.show(getSupportFragmentManager(),null);
     }
 
     @Override
     public void onStar(List<Map> weather) {
         //イベントの設定
+        Map map;
 
         if(weather!=null) {
+            weatherlist = new ArrayList<>();
             for (int z = 0; z < weather.size() ; z++){
                 map = weather.get(z);
                 weatherlist.add(map);
             }
+
             map = weather.get(cnt);
             num = Integer.parseInt(map.get("symbol_number").toString());
 
@@ -142,6 +157,7 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
 
     @Override
     public void onClick(View view) {
+        Map map;
         day_after.setEnabled(true);
         hour_after.setEnabled(true);
         day_before.setEnabled(true);
@@ -155,16 +171,19 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
             cnt = cnt + 1;
         }else if(view.getId() == R.id.after_day) {
             cnt = cnt + 8;
-        }else{
+        }else if(view.getId() == R.id.ctiybutton){
+            DialogFragment newFragment = new CtiyFragment();
+            newFragment.show(getSupportFragmentManager(),null);
+
         }
-        if (cnt > weatherlist.size()){
-            cnt = 39;
+        if (cnt > weatherlist.size()-2){
+            cnt = weatherlist.size()-1;
             day_after.setEnabled(false);
             hour_after.setEnabled(false);
-        }else if(cnt < 0){
+        }else if(cnt < 1){
+            cnt=0;
             day_before.setEnabled(false);
             hour_before.setEnabled(false);
-            cnt=0;
         }
         map = weatherlist.get(cnt);
         num = Integer.parseInt(map.get("symbol_number").toString());
@@ -241,5 +260,21 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void APIWeather(int ctiycnt) {
+        Button ctiyname = findViewById(R.id.ctiybutton);
+        ctiyList = getResources().obtainTypedArray(R.array.default_ctiyList);
+        ctiynameList = getResources().obtainTypedArray(R.array.default_ctiyNameList);
+        ctiyID = ctiyList.getInteger(ctiycnt, 0);
+        String ctiynl = ctiynameList.getString(ctiycnt);
+        cnt = 0;
+        day_after.setEnabled(true);
+        hour_after.setEnabled(true);
+        day_before.setEnabled(false);
+        hour_before.setEnabled(false);
+        ctiyname.setText(ctiynl);
+        //URLをもとに天気情報を取得
+        WeatherReader.getWeather("http://api.openweathermap.org/data/2.5/forecast?id="+ctiyID+"&APPID=d21a1076e3577e18ffe577b79bef2496&mode=xml",this);
     }
 }

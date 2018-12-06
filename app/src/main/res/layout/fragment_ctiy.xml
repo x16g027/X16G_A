@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CtiyFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/ctiy0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="北海道" />
+
+            <Button
+                android:id="@+id/ctiy1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="青森県" />
+
+            <Button
+                android:id="@+id/ctiy2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="岩手県" />
+
+            <Button
+                android:id="@+id/ctiy3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="宮城県" />
+
+            <Button
+                android:id="@+id/ctiy4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="秋田県" />
+
+            <Button
+                android:id="@+id/ctiy5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="山形県" />
+
+            <Button
+                android:id="@+id/ctiy6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="福岡県" />
+
+            <Button
+                android:id="@+id/ctiy7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="福島県" />
+
+            <Button
+                android:id="@+id/ctiy8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="茨城県" />
+
+            <Button
+                android:id="@+id/ctiy9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="栃木県" />
+
+            <Button
+                android:id="@+id/ctiy10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="埼玉県" />
+
+            <Button
+                android:id="@+id/ctiy11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="千葉県" />
+
+            <Button
+                android:id="@+id/ctiy12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="東京都" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

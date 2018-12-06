@@ -13,14 +13,27 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/dateT"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center"
-            android:text="読み込み中"
-            android:textColor="@android:color/background_dark"
-            android:textSize="70px" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/dateT"
+                android:layout_width="252dp"
+                android:layout_height="59dp"
+                android:gravity="center"
+                android:text="読み込み中"
+                android:textColor="@android:color/background_dark"
+                android:textSize="70px" />
+
+            <Button
+                android:id="@+id/ctiybutton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="東京" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/weatherImage"
