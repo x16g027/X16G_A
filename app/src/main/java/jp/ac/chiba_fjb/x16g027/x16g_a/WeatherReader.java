@@ -67,7 +67,7 @@ public class WeatherReader {
                                     for (int k = 0; k < nodeList3.getLength(); k++) {
 
                                         Node node3 = nodeList3.item(k);
-                                        Log.w("dgb00-3", k + "kai " + node3.getNodeName());
+//                                        Log.w("dgb00-3", k + "kai " + node3.getNodeName());
                                         if (String.valueOf(node3.getNodeName()).equals("symbol")) {
 
                                             NamedNodeMap attrs3 = node3.getAttributes();
