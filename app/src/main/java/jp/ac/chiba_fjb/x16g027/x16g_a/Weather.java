@@ -54,15 +54,12 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
     Button day_after;
     Button ctiyChange;
 
-
     List<Map> weatherlist;
 
     int ctiycnt;
     int ctiyID;
     TypedArray ctiyList;
     TypedArray ctiynameList;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +85,6 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
         day_after.setOnClickListener(this);
         ctiyChange.setOnClickListener(this);
 
-
         day_after.setEnabled(true);
         hour_after.setEnabled(true);
         day_before.setEnabled(false);
@@ -101,58 +97,15 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
     public void onStar(List<Map> weather) {
         //イベントの設定
         Map map;
-
         if(weather!=null) {
             weatherlist = new ArrayList<>();
-            for (int z = 0; z < weather.size() ; z++){
+            for (int z = 0; z < weather.size(); z++) {
                 map = weather.get(z);
                 weatherlist.add(map);
             }
-
-            map = weather.get(cnt);
-            num = Integer.parseInt(map.get("symbol_number").toString());
-
-            if (num >= 800) {
-                weatherImage.setImageResource(R.drawable.sunny);
-//                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.sunny_sky));
-            }else if (num >= 600 && num < 800){
-                weatherImage.setImageResource(R.drawable.rainny);
-//                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.rainny_sky));
-            }else if (num >= 400 && num < 600){
-                weatherImage.setImageResource(R.drawable.cloudy);
-//                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.cloudy_sky));
-            }else{
-            }
-
-            //日にちの処理
-            datetext = map.get("time_from").toString(); //日にち情報を取得
-
-            //datetextに格納されている年・月・日・時間をそれぞれ切り取って格納
-            year = datetext.substring(0,4);     //年
-            month = datetext.substring(5,7);    //月
-            day = datetext.substring(8,10);     //日
-            hour = datetext.substring(11,13);   //時間
-
-            //月・日・時間のデータをint型へ変換
-            month_int = Integer.parseInt(month);
-            day_int = Integer.parseInt(day);
-            hour_int = Integer.parseInt(hour);
-
-            //各データを再結合して表示
-            dateText.setText(year + "年 " + month_int + "月 " + day_int + "日 " + hour_int + "時");
-
-            //気温の処理
-            temperature = (Double.parseDouble(map.get("temperature_value").toString())) - KELVIN;
-
-            BigDecimal bd = new BigDecimal(temperature);
-            BigDecimal temp_bd = bd.setScale(0, BigDecimal.ROUND_HALF_UP);
-
-            temp.setText("気温" + String.valueOf(temp_bd) + "℃");
-
-            //風速の処理
-            w_speed = Double.parseDouble(map.get("windSpeed_mps").toString());
-            windSpeed.setText("風速" + String.valueOf(w_speed) + "m/h");
         }
+        //天候情報表示処理呼び出し
+        WeatherInfo();
     }
 
     @Override
@@ -185,6 +138,44 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
             day_before.setEnabled(false);
             hour_before.setEnabled(false);
         }
+        //天候情報表示処理呼び出し
+        WeatherInfo();
+    }
+
+    // メニューをActivity上に設置する
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // 参照するリソースは上でリソースファイルに付けた名前と同じもの
+        getMenuInflater().inflate(R.menu.option, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // メニューが選択されたときの処理
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuItem1:
+                Intent intent1 = new Intent(Weather.this, Constellation.class);
+                startActivity(intent1);
+                return true;
+
+            case R.id.menuItem2:
+                Intent intent2 = new Intent(Weather.this, Moon.class);
+                startActivity(intent2);
+                return true;
+
+            case R.id.menuItem3:
+                Intent intent3 = new Intent(Weather.this, Weather.class);
+                startActivity(intent3);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void WeatherInfo(){
+        Map map;
         map = weatherlist.get(cnt);
         num = Integer.parseInt(map.get("symbol_number").toString());
 
@@ -228,38 +219,7 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
         //風速の処理
         w_speed = Double.parseDouble(map.get("windSpeed_mps").toString());
         windSpeed.setText("風速" + String.valueOf(w_speed) + "m/h");
-    }
 
-    // メニューをActivity上に設置する
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // 参照するリソースは上でリソースファイルに付けた名前と同じもの
-        getMenuInflater().inflate(R.menu.option, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    // メニューが選択されたときの処理
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menuItem1:
-                Intent intent1 = new Intent(Weather.this, Constellation.class);
-                startActivity(intent1);
-                return true;
-
-            case R.id.menuItem2:
-                Intent intent2 = new Intent(Weather.this, Moon.class);
-                startActivity(intent2);
-                return true;
-
-            case R.id.menuItem3:
-                Intent intent3 = new Intent(Weather.this, Weather.class);
-                startActivity(intent3);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     public void APIWeather(int ctiycnt) {
