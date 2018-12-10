@@ -198,7 +198,7 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
             w_frame.setBackground(getResources().getDrawable(R.drawable.rainny_sky));
         }else if(num >= 700 && num < 800){
             //霧
-            
+
         }else{
             if(num == 800){
                 //晴れ
