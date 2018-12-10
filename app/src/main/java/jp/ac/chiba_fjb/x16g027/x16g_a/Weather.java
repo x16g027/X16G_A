@@ -42,7 +42,7 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
     Double  w_speed;
 
     ImageView weatherImage;
-    FrameLayout f_layout;
+    FrameLayout w_frame;
 
     TextView dateText;
     TextView temp;
@@ -67,7 +67,7 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
         setContentView(R.layout.activity_weather);
 
         weatherImage = findViewById(R.id.weatherImage);
-        f_layout = findViewById(R.id.framelayout);
+        w_frame = findViewById(R.id.weather_frame);
 
         dateText = findViewById(R.id.dateT);
         temp = findViewById(R.id.temperature);
@@ -179,16 +179,33 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
         map = weatherlist.get(cnt);
         num = Integer.parseInt(map.get("symbol_number").toString());
 
-        if (num >= 800) {
-            weatherImage.setImageResource(R.drawable.sunny);
-//                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.sunny_sky));
-        }else if (num >= 600 && num < 800){
+        if (num >= 200 && num < 300){
+            //雷雨、強風、嵐
+            weatherImage.setImageResource(R.drawable.thunderstorm);
+        }else if(num >= 300 && num < 400){
+            //霧雨
+
+        }else if(num >= 400 && num < 500){
+
+        }else if(num >= 500 && num < 600){
+            //雨
             weatherImage.setImageResource(R.drawable.rainny);
-//                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.rainny_sky));
-        }else if (num >= 400 && num < 600){
-            weatherImage.setImageResource(R.drawable.cloudy);
-//                f_layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.cloudy_sky));
+            w_frame.setBackground(getResources().getDrawable(R.drawable.rainny_sky));
+        }else if(num >= 600 && num < 700){
+            //雪
+//            weatherImage.setImageResource(R.drawable.snow);
+        }else if(num >= 700 && num < 800){
+            //霧
         }else{
+            if(num == 800){
+                //晴れ
+                weatherImage.setImageResource(R.drawable.sunny);
+                w_frame.setBackground(getResources().getDrawable(R.drawable.sunny_sky));
+            }else{
+                //曇り
+                weatherImage.setImageResource(R.drawable.cloudy);
+                w_frame.setBackground(getResources().getDrawable(R.drawable.cloudy_sky));
+            }
         }
 
         //日にちの処理
