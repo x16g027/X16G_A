@@ -182,9 +182,10 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
         if (num >= 200 && num < 300){
             //雷雨、強風、嵐
             weatherImage.setImageResource(R.drawable.thunderstorm);
+            w_frame.setBackground(getResources().getDrawable(R.drawable.rainny_sky));
         }else if(num >= 300 && num < 400){
             //霧雨
-
+            w_frame.setBackground(getResources().getDrawable(R.drawable.rainny_sky));
         }else if(num >= 400 && num < 500){
 
         }else if(num >= 500 && num < 600){
@@ -194,8 +195,10 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
         }else if(num >= 600 && num < 700){
             //雪
 //            weatherImage.setImageResource(R.drawable.snow);
+            w_frame.setBackground(getResources().getDrawable(R.drawable.rainny_sky));
         }else if(num >= 700 && num < 800){
             //霧
+            
         }else{
             if(num == 800){
                 //晴れ
