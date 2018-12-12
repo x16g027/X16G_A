@@ -3,7 +3,7 @@ package jp.ac.chiba_fjb.x16g027.x16g_a;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +15,9 @@ import android.widget.Button;
  */
 public class CtiyFragment extends DialogFragment implements View.OnClickListener {
 
-
+    ViewGroup containerR;
     public CtiyFragment() {
+
         // Required empty public constructor
     }
 
@@ -31,6 +32,7 @@ public class CtiyFragment extends DialogFragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view,  Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
 
         Button id0 = view.findViewById(R.id.ctiy0);
         id0.setOnClickListener(this);
@@ -92,6 +94,8 @@ public class CtiyFragment extends DialogFragment implements View.OnClickListener
         }
         Weather w = (Weather)getActivity();
         w.APIWeather(ctiycnt);
+        dismiss();
 
     }
+
 }
