@@ -110,7 +110,6 @@ public class Weather  extends AppCompatActivity implements WeatherReader.OnStarL
 
     @Override
     public void onClick(View view) {
-        Map map;
         day_after.setEnabled(true);
         hour_after.setEnabled(true);
         day_before.setEnabled(true);
